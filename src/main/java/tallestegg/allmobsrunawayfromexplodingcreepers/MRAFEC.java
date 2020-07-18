@@ -64,7 +64,7 @@ public class MRAFEC
         @SubscribeEvent
         public static void onEntityJoinWorld(EntityJoinWorldEvent event) 
         {
-          if (event.getEntity() instanceof CreatureEntity) 
+          if (event.getEntity() instanceof CreatureEntity && !(event.getEntity() instanceof CreeperEntity)) 
           {
             CreatureEntity creature = (CreatureEntity)event.getEntity();
             creature.goalSelector.addGoal(1, new AvoidExplodingCreepersGoal<>(creature, CreeperEntity.class, 6.0F, 1.0D, 1.2D));
