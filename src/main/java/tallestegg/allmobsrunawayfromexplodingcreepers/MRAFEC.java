@@ -10,7 +10,9 @@ import net.minecraft.entity.monster.CreeperEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.InterModEnqueueEvent;
@@ -18,9 +20,10 @@ import net.minecraftforge.fml.event.lifecycle.InterModProcessEvent;
 import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
-@Mod("allmobsrunawayfromexplodingcreepers")
+@Mod(MRAFEC.MODID)
 public class MRAFEC
 {
+	public static final String MODID = "allmobsrunawayfromexplodingcreepers";
     private static final Logger LOGGER = LogManager.getLogger();
 
     public MRAFEC() {
@@ -28,6 +31,7 @@ public class MRAFEC
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
+        ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, MRAFECConfig.COMMON_SPEC);
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(MRAFEC.Events.class);
     }
@@ -64,7 +68,7 @@ public class MRAFEC
         @SubscribeEvent
         public static void onEntityJoinWorld(EntityJoinWorldEvent event) 
         {
-          if (event.getEntity() instanceof CreatureEntity && !(event.getEntity() instanceof CreeperEntity)) 
+          if (event.getEntity() instanceof CreatureEntity && !MRAFECConfig.MobBlackList.contains(event.getEntity().getEntityString())) 
           {
             CreatureEntity creature = (CreatureEntity)event.getEntity();
             creature.goalSelector.addGoal(1, new AvoidExplodingCreepersGoal<>(creature, CreeperEntity.class, 6.0F, 1.0D, 1.2D));
