@@ -1,6 +1,6 @@
 package tallestegg.allmobsrunawayfromexplodingcreepers;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.tuple.Pair;
@@ -43,7 +43,7 @@ public class MRAFECConfig
 		{	
 			 MobBlackList = builder
 					.comment("Mobs in this list wont run away from creepers.")
-					.define("Mob BlackList", Collections.singletonList("minecraft:creeper"));		
+					.define("Mob BlackList", new ArrayList<>());		
 	    }
 	}
 }
