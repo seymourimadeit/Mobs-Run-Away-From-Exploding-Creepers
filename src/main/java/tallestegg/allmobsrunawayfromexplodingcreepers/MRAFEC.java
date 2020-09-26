@@ -21,9 +21,8 @@ import net.minecraftforge.fml.event.server.FMLServerStartingEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(MRAFEC.MODID)
-public class MRAFEC
-{
-	public static final String MODID = "allmobsrunawayfromexplodingcreepers";
+public class MRAFEC {
+    public static final String MODID = "allmobsrunawayfromexplodingcreepers";
     private static final Logger LOGGER = LogManager.getLogger();
 
     public MRAFEC() {
@@ -36,43 +35,35 @@ public class MRAFEC
         MinecraftForge.EVENT_BUS.register(MRAFEC.Events.class);
     }
 
-    private void setup(final FMLCommonSetupEvent event)
-    {
-    	
-    }
-
-    private void doClientStuff(final FMLClientSetupEvent event) 
-    {
+    private void setup(final FMLCommonSetupEvent event) {
 
     }
 
-    private void enqueueIMC(final InterModEnqueueEvent event)
-    {
-    	
+    private void doClientStuff(final FMLClientSetupEvent event) {
+
     }
 
-    private void processIMC(final InterModProcessEvent event)
-    {
-        LOGGER.info("Got IMC {}", event.getIMCStream().
-                map(m->m.getMessageSupplier().get()).
-                collect(Collectors.toList()));
+    private void enqueueIMC(final InterModEnqueueEvent event) {
+
     }
-    
+
+    private void processIMC(final InterModProcessEvent event) {
+        LOGGER.info("Got IMC {}", event.getIMCStream().map(m -> m.getMessageSupplier().get()).collect(Collectors.toList()));
+    }
+
     @SubscribeEvent
     public void onServerStarting(FMLServerStartingEvent event) {
         LOGGER.info("HELLO from server starting");
     }
 
-    @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
+    @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class Events {
         @SubscribeEvent
-        public static void onEntityJoinWorld(EntityJoinWorldEvent event) 
-        {
-          if (event.getEntity() instanceof CreatureEntity && !MRAFECConfig.MobBlackList.contains(event.getEntity().getEntityString())) 
-          {
-            CreatureEntity creature = (CreatureEntity)event.getEntity();
-            creature.goalSelector.addGoal(1, new AvoidExplodingCreepersGoal<>(creature, CreeperEntity.class, 6.0F, 1.0D, 1.2D));
-          }
+        public static void onEntityJoinWorld(EntityJoinWorldEvent event) {
+            if (event.getEntity() instanceof CreatureEntity && !MRAFECConfig.MobBlackList.contains(event.getEntity().getEntityString())) {
+                CreatureEntity creature = (CreatureEntity) event.getEntity();
+                creature.goalSelector.addGoal(1, new AvoidExplodingCreepersGoal<>(creature, CreeperEntity.class, 6.0F, 1.0D, 1.2D));
+            }
         }
     }
 }
